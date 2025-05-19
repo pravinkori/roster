@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
     bool newfile = false;
     int c; // contain the current case that we are on
 
+    int database_fd = -1;
+
     while ((c = getopt(argc, argv, "nf:")) != -1) {
         switch (c) {
         case 'n':
@@ -38,6 +40,20 @@ int main(int argc, char *argv[]) {
         printf("Filepath is a required argument\n");
         print_usage(argv);
         return 0;
+    }
+
+    if (newfile) {
+        database_fd = create_db_file(filepath);
+        if (database_fd == STATUS_ERROR) {
+            printf("Unable to create database file\n");
+            return -1;
+        }
+    } else {
+        database_fd = open_db_file(filepath);
+        if (database_fd == STATUS_ERROR) {
+            printf("Unable to open database file\n");
+            return -1;
+        }
     }
 
     printf("Newfile: %d\n", newfile);
