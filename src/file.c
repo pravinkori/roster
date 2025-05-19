@@ -22,3 +22,13 @@ int create_db_file(char *filename) {
 
     return fd;
 }
+
+int open_db_file(char *filename) {
+    int fd = open(filename, O_RDWR, 0644);
+    if (fd == -1) {
+        perror("open");
+        return STATUS_ERROR;
+    }
+    printf("file opened\n");
+    return fd;
+}
