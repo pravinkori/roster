@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     int c; // contain the current case that we are on
 
     int database_fd = -1;
+    dbheader_t *database_header = NULL;
 
     while ((c = getopt(argc, argv, "nf:")) != -1) {
         switch (c) {
@@ -48,16 +49,28 @@ int main(int argc, char *argv[]) {
             printf("Unable to create database file\n");
             return -1;
         }
+        if (create_db_header(database_fd, &database_header) == STATUS_ERROR) {
+            printf("Failed to create database header\n");
+            return -1;
+        }
+
     } else {
         database_fd = open_db_file(filepath);
         if (database_fd == STATUS_ERROR) {
             printf("Unable to open database file\n");
             return -1;
         }
+
+        if (validate_db_header(database_fd, &database_header) == STATUS_ERROR) {
+            printf("Failed to validate database header\n");
+            return -1;
+        }
     }
 
     printf("Newfile: %d\n", newfile);
     printf("File path: %s\n", filepath);
+
+    output_file(database_fd, database_header);
 
     return 0;
 }
