@@ -72,3 +72,21 @@ int validate_db_header(int fd, dbheader_t **header_out) {
 
     return STATUS_SUCCESS;
 }
+
+void output_file(int fd, dbheader_t *database_header) {
+    if (fd < 0) {
+        printf("Bad fd from the user\n");
+        return STATUS_ERROR;
+    }
+
+    database_header->signature = htonl(database_header->signature);
+    database_header->filesize = htonl(database_header->filesize);
+    database_header->count = htons(database_header->count);
+    database_header->version = htons(database_header->version);
+
+    lseek(fd, 0, SEEK_SET);
+
+    write(fd, database_header, sizeof(dbheader_t));
+
+    return;
+}
