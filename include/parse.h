@@ -1,7 +1,7 @@
 #ifndef PARSE_H
 #define PARSE_H
 
-#define DB_HEADER_SIGNATURE 0x4C4C4144
+#define DB_HEADER_SIGNATURE 0x474F4C44
 
 typedef struct DBHeader {
     unsigned int signature;

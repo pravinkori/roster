@@ -70,6 +70,8 @@ int validate_db_header(int fd, dbheader_t **header_out) {
         return -1;
     }
 
+    *header_out = header;
+
     return STATUS_SUCCESS;
 }
 
