@@ -12,7 +12,7 @@
 
 int create_db_header(int fd, dbheader_t **header_out) {
     dbheader_t *header = calloc(1, sizeof(dbheader_t));
-    if (header == -1) {
+    if (header == NULL) {
         printf("Memory allocation failed to create database header\n");
         return STATUS_ERROR;
     }
@@ -34,7 +34,7 @@ int validate_db_header(int fd, dbheader_t **header_out) {
     }
 
     dbheader_t *header = calloc(1, sizeof(dbheader_t));
-    if (header == -1) {
+    if (header == NULL) {
         printf("Memory allocation failed to create database header\n");
         return STATUS_ERROR;
     }
@@ -69,4 +69,6 @@ int validate_db_header(int fd, dbheader_t **header_out) {
         free(header);
         return -1;
     }
+
+    return STATUS_SUCCESS;
 }
