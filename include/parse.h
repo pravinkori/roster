@@ -12,6 +12,6 @@ typedef struct DBHeader {
 
 int create_db_header(int fd, dbheader_t **header_out);
 int validate_db_header(int fd, dbheader_t **header_out);
-void output_file(int fd, dbheader_t *database_header);
+int output_file(int fd, dbheader_t *database_header);
 
 #endif

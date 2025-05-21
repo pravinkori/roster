@@ -75,7 +75,7 @@ int validate_db_header(int fd, dbheader_t **header_out) {
     return STATUS_SUCCESS;
 }
 
-void output_file(int fd, dbheader_t *database_header) {
+int output_file(int fd, dbheader_t *database_header) {
     if (fd < 0) {
         printf("Bad fd from the user\n");
         return STATUS_ERROR;
@@ -90,5 +90,5 @@ void output_file(int fd, dbheader_t *database_header) {
 
     write(fd, database_header, sizeof(dbheader_t));
 
-    return;
+    return STATUS_SUCCESS;
 }
