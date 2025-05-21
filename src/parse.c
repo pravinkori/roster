@@ -84,7 +84,7 @@ int output_file(int fd, dbheader_t *database_header, employee_t *employees) {
     int realcount = database_header->count;
 
     database_header->signature = htonl(database_header->signature);
-    database_header->filesize = htonl(database_header->filesize);
+    database_header->filesize = htonl(sizeof(dbheader_t) + sizeof(employee_t) * realcount);
     database_header->count = htons(database_header->count);
     database_header->version = htons(database_header->version);
 
