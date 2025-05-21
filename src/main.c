@@ -18,13 +18,14 @@ int main(int argc, char *argv[]) {
     char *filepath = NULL;
     char *addstring = NULL;
     bool newfile = false;
+    bool list = false;
     int c; // contain the current case that we are on
 
     int database_fd = -1;
     dbheader_t *database_header = NULL;
     employee_t *employees = NULL;
 
-    while ((c = getopt(argc, argv, "nf:a:")) != -1) {
+    while ((c = getopt(argc, argv, "nf:a:l")) != -1) {
         switch (c) {
         case 'n':
             newfile = true;
@@ -34,6 +35,9 @@ int main(int argc, char *argv[]) {
             break;
         case 'a':
             addstring = optarg;
+            break;
+        case 'l':
+            list = true;
             break;
         case '?':
             printf("Unknown option -%c\n", c);
@@ -73,9 +77,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("Newfile: %d\n", newfile);
-    printf("File path: %s\n", filepath);
-
     if (read_employees(database_fd, database_header, &employees) != STATUS_SUCCESS) {
         printf("Failed to read employees\n");
         return 0;
@@ -89,7 +90,17 @@ int main(int argc, char *argv[]) {
         add_employee(database_header, employees, addstring);
     }
 
+    if (list) {
+        list_employees(database_header, employees);
+    }
+
     output_file(database_fd, database_header, employees);
+
+    // TODO:
+    // 1. Remove an employee by name:
+    //      - find employee by name and remove them using -r
+    // 2. Update the hours of employee:
+    //      - find employee by name and remove them using -r
 
     return 0;
 }

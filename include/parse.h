@@ -21,5 +21,6 @@ int validate_db_header(int fd, dbheader_t **header_out);
 int output_file(int fd, dbheader_t *database_header, employee_t *employees);
 int read_employees(int fd, dbheader_t *database_header, employee_t **employees_out);
 int add_employee(dbheader_t *database_header, employee_t *employees, char *addstring);
+void list_employees(dbheader_t *database_header, employee_t *employees);
 
 #endif

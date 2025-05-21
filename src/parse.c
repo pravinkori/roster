@@ -140,3 +140,15 @@ int add_employee(dbheader_t *database_header, employee_t *employees, char *addst
     printf("%s %s %s\n", name, address, hours);
     return STATUS_SUCCESS;
 }
+
+void list_employees(dbheader_t *database_header, employee_t *employees) {
+    int i = 0;
+    for (i = 0; i < database_header->count; i++) {
+        printf("Employee: %d\n", i + 1);
+        printf("\tName: %s\n", employees[i].name);
+        printf("\tAddress: %s\n", employees[i].address);
+        printf("\tHours: %d\n\n", employees[i].hours);
+    }
+    printf("Total %d employee%s\n", database_header->count,
+           database_header->count == 1 ? "" : "s");
+}
