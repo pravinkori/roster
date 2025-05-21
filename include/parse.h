@@ -18,7 +18,8 @@ typedef struct Employee {
 
 int create_db_header(int fd, dbheader_t **header_out);
 int validate_db_header(int fd, dbheader_t **header_out);
-int output_file(int fd, dbheader_t *database_header);
+int output_file(int fd, dbheader_t *database_header, employee_t *employees);
 int read_employees(int fd, dbheader_t *database_header, employee_t **employees_out);
+int add_employee(dbheader_t *database_header, employee_t *employees, char *addstring);
 
 #endif

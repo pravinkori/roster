@@ -1,6 +1,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "common.h"
 #include "file.h"
@@ -15,6 +16,7 @@ void print_usage(char *argv[]) {
 
 int main(int argc, char *argv[]) {
     char *filepath = NULL;
+    char *addstring = NULL;
     bool newfile = false;
     int c; // contain the current case that we are on
 
@@ -22,13 +24,16 @@ int main(int argc, char *argv[]) {
     dbheader_t *database_header = NULL;
     employee_t *employees = NULL;
 
-    while ((c = getopt(argc, argv, "nf:")) != -1) {
+    while ((c = getopt(argc, argv, "nf:a:")) != -1) {
         switch (c) {
         case 'n':
             newfile = true;
             break;
         case 'f':
             filepath = optarg;
+            break;
+        case 'a':
+            addstring = optarg;
             break;
         case '?':
             printf("Unknown option -%c\n", c);
@@ -76,7 +81,15 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    output_file(database_fd, database_header);
+    if (addstring) {
+        database_header->count++;
+        // Create room for next new employee
+        employees = realloc(employees, database_header->count * (sizeof(employee_t)));
+
+        add_employee(database_header, employees, addstring);
+    }
+
+    output_file(database_fd, database_header, employees);
 
     return 0;
 }
