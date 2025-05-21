@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
 
     int database_fd = -1;
     dbheader_t *database_header = NULL;
+    employee_t *employees = NULL;
 
     while ((c = getopt(argc, argv, "nf:")) != -1) {
         switch (c) {
@@ -69,6 +70,11 @@ int main(int argc, char *argv[]) {
 
     printf("Newfile: %d\n", newfile);
     printf("File path: %s\n", filepath);
+
+    if (read_employees(database_fd, database_header, &employees) != STATUS_SUCCESS) {
+        printf("Failed to read employees\n");
+        return 0;
+    }
 
     output_file(database_fd, database_header);
 

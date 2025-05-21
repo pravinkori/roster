@@ -92,3 +92,28 @@ int output_file(int fd, dbheader_t *database_header) {
 
     return STATUS_SUCCESS;
 }
+
+int read_employees(int fd, dbheader_t *database_header, employee_t **employees_out) {
+    if (fd < 0) {
+        printf("Bad fd from the user\n");
+        return STATUS_ERROR;
+    }
+
+    int count = database_header->count;
+
+    employee_t *employees = calloc(count, sizeof(employee_t));
+    if (employees == NULL) {
+        printf("Memory allocation failed\n");
+        return STATUS_ERROR;
+    }
+
+    read(fd, employees, count * sizeof(employee_t));
+
+    int i = 0;
+    for (i = 0; i < count; i++) {
+        employees[i].hours = ntohl(employees[i].hours);
+    }
+
+    *employees_out = employees;
+    return STATUS_SUCCESS;
+}
