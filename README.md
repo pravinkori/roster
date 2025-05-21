@@ -53,6 +53,5 @@ make
 | `-f <file>`  | Specify the file path to database file to use  |
 | `-n`         | Create a new database file if it doesn't exist |
 | `-a <entry>` | Add an employee entry                          |
-| `-d <key>`   | Delete an employee (by name or address)        |
-| `-u <entry>` | Update employee details                        |
+| `-l <entry>` | List employee details                          |
 
