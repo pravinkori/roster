@@ -68,6 +68,12 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    if (!newfile && !list && !addstring) {
+        fprintf(stderr, "Error: At least one operation must be specified (-n, -l, or -a)\n");
+        print_usage(argv);
+        return EXIT_FAILURE;
+    }
+
     if (newfile) {
         database_fd = create_db_file(filepath);
         if (database_fd == STATUS_ERROR) {
