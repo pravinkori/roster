@@ -44,9 +44,11 @@ int main(int argc, char *argv[]) {
             list = true;
             break;
         case '?':
-            printf("Unknown option -%c\n", c);
+            fprintf(stderr, "Unknown option -%c\n", optopt);
+            print_usage(argv);
             break;
         default:
+            fprintf(stderr, "Unexpected error in argument parsing\n");
             return -1;
         }
     }

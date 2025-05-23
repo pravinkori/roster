@@ -30,6 +30,6 @@ int open_db_file(char *filename) {
         perror("open");
         return STATUS_ERROR;
     }
-    printf("file opened\n");
+    // printf("file opened\n");
     return fd;
 }
