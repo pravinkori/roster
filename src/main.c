@@ -23,13 +23,14 @@ int main(int argc, char *argv[]) {
     char *addstring = NULL;
     bool newfile = false;
     bool list = false;
+    bool show_help = false;
     int c; // contain the current case that we are on
 
     int database_fd = -1;
     dbheader_t *database_header = NULL;
     employee_t *employees = NULL;
 
-    while ((c = getopt(argc, argv, "nf:a:l")) != -1) {
+    while ((c = getopt(argc, argv, "nf:a:lh")) != -1) {
         switch (c) {
         case 'n':
             newfile = true;
@@ -43,6 +44,9 @@ int main(int argc, char *argv[]) {
         case 'l':
             list = true;
             break;
+        case 'h':
+            show_help = true;
+            break;
         case '?':
             fprintf(stderr, "Unknown option -%c\n", optopt);
             print_usage(argv);
@@ -51,6 +55,11 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "Unexpected error in argument parsing\n");
             return -1;
         }
+    }
+
+    if (show_help) {
+        print_usage(argv);
+        return STATUS_SUCCESS;
     }
 
     if (filepath == NULL) {
