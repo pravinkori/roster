@@ -108,6 +108,7 @@ int read_employees(int fd, dbheader_t *database_header, employee_t **employees_o
     }
 
     int count = database_header->count;
+    size_t total_size = count * sizeof(employee_t);
 
     employee_t *employees = calloc(count, sizeof(employee_t));
     if (employees == NULL) {
@@ -115,10 +116,25 @@ int read_employees(int fd, dbheader_t *database_header, employee_t **employees_o
         return STATUS_ERROR;
     }
 
-    read(fd, employees, count * sizeof(employee_t));
+    // read(fd, employees, count * sizeof(employee_t));
+
+    // Read employee data from file
+    ssize_t bytes_read = read(fd, employees, total_size);
+    if (bytes_read < 0) {
+        perror("Error reading employees from file");
+        free(employees);
+        return STATUS_ERROR;
+    }
+
+    // Check if we read exactly the expected number of bytes
+    if ((size_t)bytes_read != total_size) {
+        printf("Incomplete read: expected %zu bytes, got %zd bytes\n", total_size, bytes_read);
+        free(employees);
+        return STATUS_ERROR;
+    }
 
     int i = 0;
-    for (i = 0; i < count; i++) {
+    for (; i < count; i++) {
         employees[i].hours = ntohl(employees[i].hours);
     }
 
