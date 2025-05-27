@@ -11,6 +11,16 @@
 #include "parse.h"
 
 int create_db_header(int fd, dbheader_t **header_out) {
+    if (fd < 0) {
+        fprintf(stderr, "Error: Invalid file descriptor\n");
+        return STATUS_ERROR;
+    }
+
+    if (header_out == NULL) {
+        fprintf(stderr, "Error: NULL pointer passed for header output\n");
+        return STATUS_ERROR;
+    }
+
     dbheader_t *header = calloc(1, sizeof(dbheader_t));
     if (header == NULL) {
         printf("Memory allocation failed to create database header\n");
