@@ -91,12 +91,14 @@ int main(int argc, char *argv[]) {
     } else {
         database_fd = open_db_file(filepath);
         if (database_fd == STATUS_ERROR) {
-            printf("Unable to open database file\n");
+            fprintf(stderr, "Error: Unable to open database file '%s'\n", filepath);
+            fprintf(stderr, "Hint: Use -n flag to create a new database\n");
             return -1;
         }
 
         if (validate_db_header(database_fd, &database_header) == STATUS_ERROR) {
-            printf("Failed to validate database header\n");
+            fprintf(stderr, "Error: Failed to validate database header for '%s'\n", filepath);
+            fprintf(stderr, "The file may be corrupted or not a valid database\n");
             return -1;
         }
     }
