@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (filepath == NULL) {
-        printf("Filepath is a required argument\n");
+        fprintf(stderr, "Error: Filepath is a required argument\n");
         print_usage(argv);
         return 0;
     }
@@ -77,13 +77,16 @@ int main(int argc, char *argv[]) {
     if (newfile) {
         database_fd = create_db_file(filepath);
         if (database_fd == STATUS_ERROR) {
-            printf("Unable to create database file\n");
+            fprintf(stderr, "Error: Unable to create database file '%s'\n", filepath);
             return -1;
         }
+
         if (create_db_header(database_fd, &database_header) == STATUS_ERROR) {
-            printf("Failed to create database header\n");
+            fprintf(stderr, "Error: Failed to create database header\n");
             return -1;
         }
+
+        printf("Successfully created new database: %s\n", filepath);
 
     } else {
         database_fd = open_db_file(filepath);
