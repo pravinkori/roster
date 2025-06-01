@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (read_employees(database_fd, database_header, &employees) != STATUS_SUCCESS) {
-        printf("Failed to read employees\n");
+        fprintf(stderr, "Error: Failed to read employees from database\n");
         return 0;
     }
 
