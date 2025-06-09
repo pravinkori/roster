@@ -43,14 +43,33 @@ int validate_db_header(int fd, dbheader_t **header_out) {
         return STATUS_ERROR;
     }
 
-    dbheader_t *header = calloc(1, sizeof(dbheader_t));
-    if (header == NULL) {
-        printf("Memory allocation failed to create database header\n");
+    if (header_out == NULL) {
+        fprintf(stderr, "Error: NULL pointer passed for header output\n");
         return STATUS_ERROR;
     }
 
-    if (read(fd, header, sizeof(dbheader_t)) != sizeof(dbheader_t)) {
-        perror("read");
+    dbheader_t *header = calloc(1, sizeof(dbheader_t));
+    if (header == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed for database header\n");
+        return STATUS_ERROR;
+    }
+
+    // if (read(fd, header, sizeof(dbheader_t)) != sizeof(dbheader_t)) {
+    //     perror("read");
+    //     free(header);
+    //     return STATUS_ERROR;
+    // }
+
+    ssize_t bytes_read = read(fd, header, sizeof(dbheader_t));
+    if (bytes_read == -1) {
+        perror("Error reading database header");
+        free(header);
+        return STATUS_ERROR;
+    }
+
+    if (bytes_read != sizeof(dbheader_t)) {
+        fprintf(stderr, "Error: Incomplete database header (expected %zu bytes, got %zd)\n",
+                sizeof(dbheader_t), bytes_read);
         free(header);
         return STATUS_ERROR;
     }
@@ -61,15 +80,16 @@ int validate_db_header(int fd, dbheader_t **header_out) {
     header->filesize = ntohl(header->filesize);
 
     if (header->version != 1) {
-        printf("Improper header version\n");
+        fprintf(stderr, "Error: Unsupported database version %d (expected 1)\n", header->version);
         free(header);
-        return -1;
+        return STATUS_ERROR;
     }
 
     if (header->signature != DB_HEADER_SIGNATURE) {
-        printf("Improper header signature\n");
+        fprintf(stderr, "Error: Invalid database signature (0x%08X)\n", header->signature);
+        fprintf(stderr, "This file may not be a valid database or may be corrupted\n");
         free(header);
-        return -1;
+        return STATUS_ERROR;
     }
 
     struct stat dbstat = {0};
@@ -77,7 +97,7 @@ int validate_db_header(int fd, dbheader_t **header_out) {
     if (header->filesize != dbstat.st_size) {
         printf("Corrupted database\n");
         free(header);
-        return -1;
+        return STATUS_ERROR;
     }
 
     *header_out = header;
