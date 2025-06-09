@@ -108,12 +108,28 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    // Handle add employee operation
     if (addstring) {
+        // Increment count first
         database_header->count++;
-        // Create room for next new employee
-        employees = realloc(employees, database_header->count * (sizeof(employee_t)));
 
-        add_employee(database_header, employees, addstring);
+        // Reallocate memory for new employee
+        employee_t *temp_employees = realloc(employees, database_header->count * sizeof(employee_t));
+        if (temp_employees == NULL) {
+            fprintf(stderr, "Error: Memory allocation failed when adding employee\n");
+            database_header->count--; // Revert count increment
+            return STATUS_ERROR;
+        }
+        employees = temp_employees;
+
+        // Add the employee
+        if (add_employee(database_header, employees, addstring) != STATUS_SUCCESS) {
+            fprintf(stderr, "Error: Failed to add employee\n");
+            database_header->count--; // Revert count increment
+            return STATUS_ERROR;
+        }
+
+        printf("Employee added successfully\n");
     }
 
     if (list) {
