@@ -95,7 +95,9 @@ int validate_db_header(int fd, dbheader_t **header_out) {
     struct stat dbstat = {0};
     fstat(fd, &dbstat);
     if (header->filesize != dbstat.st_size) {
-        printf("Corrupted database\n");
+        fprintf(stderr, "Error: Database corruption detected\n");
+        fprintf(stderr, "Header claims %u bytes, file is %lld bytes\n",
+                header->filesize, (long long)dbstat.st_size);
         free(header);
         return STATUS_ERROR;
     }
