@@ -143,6 +143,9 @@ int main(int argc, char *argv[]) {
     //      - find employee by name and remove them using -r
     // 2. Update the hours of employee:
     //      - find employee by name and remove them using -r
+    free(employees);
+    free(database_header);
+    close(database_fd);
 
     return 0;
 }
