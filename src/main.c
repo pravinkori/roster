@@ -136,7 +136,14 @@ int main(int argc, char *argv[]) {
         list_employees(database_header, employees);
     }
 
-    output_file(database_fd, database_header, employees);
+    // output_file(database_fd, database_header, employees);
+    if (output_file(database_fd, database_header, employees) != STATUS_SUCCESS) {
+        fprintf(stderr, "Error: Failed to write to database\n");
+        free(employees);
+        free(database_header);
+        close(database_fd);
+        return STATUS_ERROR;
+    }
 
     // TODO:
     // 1. Remove an employee by name:
