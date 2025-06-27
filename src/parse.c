@@ -181,6 +181,11 @@ int add_employee(dbheader_t *database_header, employee_t *employees, char *addst
     char *address = strtok(NULL, ",");
     char *hours = strtok(NULL, ",");
 
+    if (!name || !address || !hours) {
+        fprintf(stderr, "Error: Invalid format for addstring\n");
+        return STATUS_ERROR;
+    }
+
     strncpy(employees[database_header->count - 1].name, name, sizeof(employees[database_header->count - 1].name));
     strncpy(employees[database_header->count - 1].address, address, sizeof(employees[database_header->count - 1].address));
     employees[database_header->count - 1].hours = atoi(hours);
