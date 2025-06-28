@@ -49,7 +49,7 @@ remove:
 	@./$(TARGET) -f ./emp.db -r "Jack Doe"
 	@./$(TARGET) -f ./emp.db -l
 
-log: | logs
+valgrind: | logs
 	@echo "\n===== Valgrind run at $$(date) =====\n" >> ./logs/valgrind.log
 	@valgrind --leak-check=full --show-leak-kinds=all ./bin/dbview -s -f ./emp.db -l >> ./logs/valgrind.log 2>&1
 
