@@ -1,8 +1,8 @@
 # roster
 
-`roster` is a lightweight, Unix-style command-line utility for managing an employee database stored in a flat file. It supports viewing, adding, deleting, and updating employee records using flag-driven command-line options — making it ideal for scripting and automation.
+`roster` (binary: `dbview`) is a lightweight, Unix-style command-line utility for managing an employee database stored in a flat file. It supports viewing, adding, deleting, and updating employee records using flag-driven command-line options — making it ideal for scripting and automation.
 
-## Features
+## ✨ Features
 
 - Load and validate an employee database from a file
 - Add new employee entries
@@ -11,7 +11,7 @@
 - Create new databases if they don't exist
 - Designed for ease of scripting — minimal interactivity
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```
 roster/  
@@ -26,19 +26,21 @@ roster/
 ├── bin/ # Compiled binary output  
 │ └── dbview  
 ├── obj/ # Object files  
+├── logs/ # Valgrind logs  
 ├── Makefile # Build script  
 ├── .gitignore  
 └── README.md
 
 ````
 
-## Usage
+## 🚀 Usage
 
-### Build the project
+### Building the project
 
 ```bash
 make
 ````
+The compiled binary will be located at `./bin/dbview`
 
 ### Run the utility
 
@@ -46,12 +48,46 @@ make
 ./bin/dbview [options]
 ```
 
-### Options
+### Available Options
 
 | Flag         | Description                                    |
 | ------------ | ---------------------------------------------- |
 | `-f <file>`  | Specify the file path to database file to use  |
 | `-n`         | Create a new database file if it doesn't exist |
-| `-a <entry>` | Add an employee entry                          |
-| `-l <entry>` | List employee details                          |
+| `-a <name,address,hours>` | Add a new employee record         |
+| `-r <name>`  | Remove an employee by name                     |
+| `-u <name,hours>` | Update working hours for an employee by name |
+| `-l`         | List employee details                          |
 
+## 💡 Examples
+Create a new database
+``` bash
+./bin/dbview -f emp.db -n
+```
+Add employees
+``` bash
+./bin/dbview -f emp.db -a "Alice Smith,42 Maple St.,180"
+./bin/dbview -f emp.db -a "Bob Brown,99 Oak Dr.,200"
+```
+List employees
+``` bash
+./bin/dbview -f emp.db -l
+```
+Update hours
+``` bash
+./bin/dbview -f emp.db -u "Bob Brown,220"
+```
+Delete an employee
+``` bash
+./bin/dbview -f emp.db -r "Alice Smith"
+```
+
+## 🧪 Testing & Debugging
+To test the program with Valgrind (memory analysis):
+``` bash
+make valgrind
+```
+Valgrind logs are appended to ./logs/valgrind.log.
+
+## 🤝 Contributing
+Pull requests and issues are welcome. For major changes, please open an issue first to discuss what you’d like to change.
