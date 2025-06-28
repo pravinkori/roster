@@ -11,11 +11,13 @@
 void print_usage(char *argv[]) {
     fprintf(stderr, "Usage: %s -f <database file> [OPTIONS]\n", argv[0]);
     fprintf(stderr, "OPTIONS:\n");
-    fprintf(stderr, "\t -f <file>     : (required) path to database file\n");
-    fprintf(stderr, "\t -n            : create new database file\n");
-    fprintf(stderr, "\t -a <data>     : add employee (format: name,address,hours)\n");
-    fprintf(stderr, "\t -l            : list all employees\n");
-    fprintf(stderr, "\t -h            : show this help message\n");
+    fprintf(stderr, "\t -f <file>               : (required) path to database file\n");
+    fprintf(stderr, "\t -n                      : create new database file\n");
+    fprintf(stderr, "\t -a <data>               : add employee (format: name,address,hours)\n");
+    fprintf(stderr, "\t -r <name>               : remove employee (format: name)\n");
+    fprintf(stderr, "\t -a <name>,<hours>       : update employee hours (format: name,hours)\n");
+    fprintf(stderr, "\t -l                      : list all employees\n");
+    fprintf(stderr, "\t -h                      : show this help message\n");
     return;
 }
 
@@ -23,6 +25,7 @@ int main(int argc, char *argv[]) {
     char *filepath = NULL;
     char *addstring = NULL;
     char *removename = NULL;
+    char *updatestring = NULL;
     bool newfile = false;
     bool list = false;
     bool show_help = false;
@@ -49,6 +52,9 @@ int main(int argc, char *argv[]) {
         case 'r':
             removename = optarg;
             break;
+        case 'u':
+            updatestring = optarg;
+            break;
         case 'h':
             show_help = true;
             break;
@@ -73,8 +79,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    if (!newfile && !list && !addstring && !removename) {
-        fprintf(stderr, "Error: At least one operation must be specified (-n, -l, -a, or -r)\n");
+    if (!newfile && !list && !addstring && !removename && !updatestring) {
+        fprintf(stderr, "Error: At least one operation must be specified (-n, -l, -a, -r, or -u)\n");
         print_usage(argv);
         return EXIT_FAILURE;
     }
@@ -142,6 +148,22 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "Error: Failed to remove employee '%s'\n", removename);
         } else {
             printf("Employee '%s' removed successfully\n", removename);
+        }
+    }
+
+    if (updatestring) {
+        char *sep = strchr(updatestring, ',');
+        if (sep) {
+            *sep = '\0';
+            char *name = updatestring;
+            int new_hours = atoi(sep + 1);
+            if (update_employee_hours(database_header, employees, name, new_hours) != STATUS_SUCCESS) {
+                fprintf(stderr, "Error: Failed to update hours for '%s'\n", name);
+            } else {
+                printf("Employee '%s' hours updated to %d\n", name, new_hours);
+            }
+        } else {
+            fprintf(stderr, "Error: Invalid format for -u (expected name,hours)\n");
         }
     }
 

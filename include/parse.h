@@ -22,6 +22,7 @@ int output_file(int fd, dbheader_t *database_header, employee_t *employees);
 int read_employees(int fd, dbheader_t *database_header, employee_t **employees_out);
 int add_employee(dbheader_t *database_header, employee_t *employees, char *addstring);
 int remove_employee_by_name(dbheader_t *header, employee_t **employees_out, const char *name);
+int update_employee_hours(dbheader_t *header, employee_t *employees, const char *name, int new_hours);
 void list_employees(dbheader_t *database_header, employee_t *employees);
 
 #endif

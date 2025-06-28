@@ -220,6 +220,16 @@ int remove_employee_by_name(dbheader_t *header, employee_t **employees_out, cons
     return STATUS_SUCCESS;
 }
 
+int update_employee_hours(dbheader_t *header, employee_t *employees, const char *name, int new_hours) {
+    for (int i = 0; i < header->count; i++) {
+        if (strcmp(employees[i].name, name) == 0) {
+            employees[i].hours = new_hours;
+            return STATUS_SUCCESS;
+        }
+    }
+    return STATUS_ERROR;
+}
+
 void list_employees(dbheader_t *database_header, employee_t *employees) {
     int i = 0;
     for (i = 0; i < database_header->count; i++) {
