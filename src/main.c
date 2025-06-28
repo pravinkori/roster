@@ -15,7 +15,7 @@ void print_usage(char *argv[]) {
     fprintf(stderr, "\t -n                      : create new database file\n");
     fprintf(stderr, "\t -a <data>               : add employee (format: name,address,hours)\n");
     fprintf(stderr, "\t -r <name>               : remove employee (format: name)\n");
-    fprintf(stderr, "\t -a <name>,<hours>       : update employee hours (format: name,hours)\n");
+    fprintf(stderr, "\t -u <name>,<hours>       : update employee hours (format: name,hours)\n");
     fprintf(stderr, "\t -l                      : list all employees\n");
     fprintf(stderr, "\t -h                      : show this help message\n");
     return;
@@ -180,11 +180,6 @@ int main(int argc, char *argv[]) {
         return STATUS_ERROR;
     }
 
-    // TODO:
-    // 1. Remove an employee by name:
-    //      - find employee by name and remove them using -r
-    // 2. Update the hours of employee:
-    //      - find employee by name and remove them using -r
     free(employees);
     free(database_header);
     close(database_fd);
