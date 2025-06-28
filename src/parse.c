@@ -130,6 +130,12 @@ int output_file(int fd, dbheader_t *database_header, employee_t *employees) {
         write(fd, &employees[i], sizeof(employee_t));
     }
 
+    // Ensure the file size matches the header after writing
+    if (ftruncate(fd, sizeof(dbheader_t) + sizeof(employee_t) * realcount) == -1) {
+        perror("ftruncate failed");
+        return STATUS_ERROR;
+    }
+
     return STATUS_SUCCESS;
 }
 
@@ -191,6 +197,26 @@ int add_employee(dbheader_t *database_header, employee_t *employees, char *addst
     employees[database_header->count - 1].hours = atoi(hours);
 
     printf("%s %s %s\n", name, address, hours);
+    return STATUS_SUCCESS;
+}
+
+int remove_employee_by_name(dbheader_t *header, employee_t **employees_out, const char *name) {
+    int found = -1;
+    for (int i = 0; i < header->count; i++) {
+        if (strcmp((*employees_out)[i].name, name) == 0) {
+            found = i;
+            break;
+        }
+    }
+    if (found == -1)
+        return STATUS_ERROR;
+
+    for (int i = found; i < header->count - 1; i++) {
+        (*employees_out)[i] = (*employees_out)[i + 1];
+    }
+
+    header->count--;
+    *employees_out = realloc(*employees_out, header->count * sizeof(employee_t));
     return STATUS_SUCCESS;
 }
 

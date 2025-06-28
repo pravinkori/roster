@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "common.h"
 #include "file.h"
@@ -21,6 +22,7 @@ void print_usage(char *argv[]) {
 int main(int argc, char *argv[]) {
     char *filepath = NULL;
     char *addstring = NULL;
+    char *removename = NULL;
     bool newfile = false;
     bool list = false;
     bool show_help = false;
@@ -30,7 +32,7 @@ int main(int argc, char *argv[]) {
     dbheader_t *database_header = NULL;
     employee_t *employees = NULL;
 
-    while ((c = getopt(argc, argv, "nf:a:lh")) != -1) {
+    while ((c = getopt(argc, argv, "nf:a:lr:u:h")) != -1) {
         switch (c) {
         case 'n':
             newfile = true;
@@ -43,6 +45,9 @@ int main(int argc, char *argv[]) {
             break;
         case 'l':
             list = true;
+            break;
+        case 'r':
+            removename = optarg;
             break;
         case 'h':
             show_help = true;
@@ -68,8 +73,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    if (!newfile && !list && !addstring) {
-        fprintf(stderr, "Error: At least one operation must be specified (-n, -l, or -a)\n");
+    if (!newfile && !list && !addstring && !removename) {
+        fprintf(stderr, "Error: At least one operation must be specified (-n, -l, -a, or -r)\n");
         print_usage(argv);
         return EXIT_FAILURE;
     }
@@ -130,6 +135,14 @@ int main(int argc, char *argv[]) {
         }
 
         printf("Employee added successfully\n");
+    }
+
+    if (removename) {
+        if (remove_employee_by_name(database_header, &employees, removename) != STATUS_SUCCESS) {
+            fprintf(stderr, "Error: Failed to remove employee '%s'\n", removename);
+        } else {
+            printf("Employee '%s' removed successfully\n", removename);
+        }
     }
 
     if (list) {
