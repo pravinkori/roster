@@ -1,4 +1,4 @@
-TARGET = bin/dbview
+TARGET = bin/roster
 
 SRC = $(wildcard src/*.c)
 OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
@@ -51,7 +51,7 @@ remove:
 
 valgrind: | logs
 	@echo "\n===== Valgrind run at $$(date) =====\n" >> ./logs/valgrind.log
-	@valgrind --leak-check=full --show-leak-kinds=all ./bin/dbview -s -f ./emp.db -l >> ./logs/valgrind.log 2>&1
+	@valgrind --leak-check=full --show-leak-kinds=all ./bin/roster -f ./emp.db -l >> ./logs/valgrind.log 2>&1
 
 logs:
 	mkdir -p logs
