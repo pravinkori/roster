@@ -1,6 +1,6 @@
 # roster
 
-`roster` (binary: `dbview`) is a lightweight, Unix-style command-line utility for managing an employee database stored in a flat file. It supports viewing, adding, deleting, and updating employee records using flag-driven command-line options — making it ideal for scripting and automation.
+`roster` (binary: `roster`) is a lightweight, Unix-style command-line utility for managing an employee database stored in a flat file. It supports viewing, adding, deleting, and updating employee records using flag-driven command-line options — making it ideal for scripting and automation.
 
 ## ✨ Features
 
@@ -62,24 +62,24 @@ The compiled binary will be located at `./bin/dbview`
 ## 💡 Examples
 Create a new database
 ``` bash
-./bin/dbview -f emp.db -n
+./bin/roster -f emp.db -n
 ```
 Add employees
 ``` bash
-./bin/dbview -f emp.db -a "Alice Smith,42 Maple St.,180"
-./bin/dbview -f emp.db -a "Bob Brown,99 Oak Dr.,200"
+./bin/roster -f emp.db -a "Alice Smith,42 Maple St.,180"
+./bin/roster -f emp.db -a "Bob Brown,99 Oak Dr.,200"
 ```
 List employees
 ``` bash
-./bin/dbview -f emp.db -l
+./bin/roster -f emp.db -l
 ```
 Update hours
 ``` bash
-./bin/dbview -f emp.db -u "Bob Brown,220"
+./bin/roster -f emp.db -u "Bob Brown,220"
 ```
 Delete an employee
 ``` bash
-./bin/dbview -f emp.db -r "Alice Smith"
+./bin/roster -f emp.db -r "Alice Smith"
 ```
 
 ## 🧪 Testing & Debugging
