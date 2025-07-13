@@ -45,7 +45,7 @@ The compiled binary will be located at `./bin/dbview`
 ### Run the utility
 
 ```sh
-./bin/dbview [options]
+./bin/roster [options]
 ```
 
 ### Available Options
