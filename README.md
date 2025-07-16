@@ -24,7 +24,7 @@ roster/
 │ ├── file.h  
 │ └── parse.h  
 ├── bin/ # Compiled binary output  
-│ └── dbview  
+│ └── roster  
 ├── obj/ # Object files  
 ├── logs/ # Valgrind logs  
 ├── Makefile # Build script  
